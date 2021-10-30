@@ -12,19 +12,20 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
+    const user = await this.usersService.findByUsername(username);
     const latestUserPassword = await this.usersService.findLatestPassword(
       user.id,
     );
-    console.log(latestUserPassword);
     if (
       user &&
       password &&
       compareSync(password, latestUserPassword.password)
     ) {
-      return this.jwtService.sign({
-        test: user.id,
-      });
+      return {
+        accessToken: this.jwtService.sign({
+          userId: user.id,
+        }),
+      };
     }
     throw new UnauthorizedException();
   }

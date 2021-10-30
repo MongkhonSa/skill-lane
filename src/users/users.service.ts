@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserPassword } from './entities/userPassword.entity';
@@ -15,7 +14,10 @@ export class UsersService {
     private userPasswordRepository: Repository<UserPassword>,
   ) {}
 
-  async findOne(username: string): Promise<User | undefined> {
+  async findOne(id: number): Promise<User | undefined> {
+    return this.userRepository.findOne(id);
+  }
+  async findByUsername(username: string): Promise<User | undefined> {
     return this.userRepository.findOne({
       username,
     });
@@ -26,15 +28,14 @@ export class UsersService {
       user: userId,
     });
   }
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
-  }
 
-  findAll() {
-    return `This action returns all users`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    return await this.userRepository.update(id, {
+      firstName: updateUserDto.firstName,
+      lastName: updateUserDto.lastName,
+      nickName: updateUserDto.nickName,
+      birthday: updateUserDto.birthday,
+      gender: updateUserDto.gender,
+    });
   }
 }
