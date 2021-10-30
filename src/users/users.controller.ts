@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   UseGuards,
   Request,
 } from '@nestjs/common';
@@ -37,10 +36,6 @@ export class UsersController {
     return this.usersService.update(+id, updateUserDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
-  }
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
