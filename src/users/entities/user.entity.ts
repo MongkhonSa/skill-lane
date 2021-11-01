@@ -1,3 +1,4 @@
+import { Course } from 'src/courses/entities/course.entity';
 import {
   Entity,
   Column,
@@ -38,5 +39,8 @@ export class User {
   updatedAt: Date;
 
   @OneToMany(() => UserPassword, (userPassword) => userPassword.user)
-  password: string[];
+  password: UserPassword[];
+
+  @OneToMany(() => Course, (course) => course.user)
+  courses: Course[];
 }

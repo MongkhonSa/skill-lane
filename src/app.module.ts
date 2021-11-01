@@ -8,13 +8,15 @@ import { User } from './users/entities/user.entity';
 import { ConfigModule } from '@nestjs/config';
 import { UserPassword } from './users/entities/userPassword.entity';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { CoursesModule } from './courses/courses.module';
+import { Course } from './courses/entities/course.entity';
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      entities: [User, UserPassword],
+      entities: [User, UserPassword, Course],
       namingStrategy: new SnakeNamingStrategy(),
 
       synchronize: false,
@@ -24,6 +26,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
     }),
     UsersModule,
     AuthModule,
+    CoursesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
