@@ -6,7 +6,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import { Role } from './role.entity';
 import { UserPassword } from './userPassword.entity';
 
 @Entity()
@@ -43,4 +46,8 @@ export class User {
 
   @OneToMany(() => Course, (course) => course.user)
   courses: Course[];
+
+  @ManyToMany(() => Role, (role) => role.users)
+  @JoinTable()
+  roles: Role[];
 }

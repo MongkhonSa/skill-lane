@@ -10,13 +10,16 @@ import { UserPassword } from './users/entities/userPassword.entity';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { CoursesModule } from './courses/courses.module';
 import { Course } from './courses/entities/course.entity';
+import { Role } from './users/entities/role.entity';
+import { RolesGuard } from './users/roles.guard';
+import { JwtStrategy } from './auth/jwt.strategy';
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      entities: [User, UserPassword, Course],
+      entities: [User, UserPassword, Course, Role],
       namingStrategy: new SnakeNamingStrategy(),
 
       synchronize: false,
@@ -29,6 +32,6 @@ import { Course } from './courses/entities/course.entity';
     CoursesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [JwtStrategy, AppService, RolesGuard],
 })
 export class AppModule {}
